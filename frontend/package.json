@@ -1,3 +1,4 @@
+
 {
   "name": "rishu-storefront",
   "version": "1.0.0",
@@ -16,5 +17,8 @@
     "react-dom": "latest",
     "lucide-react": "latest"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest"
+  }
 }

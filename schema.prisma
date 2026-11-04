@@ -1,0 +1,7 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql" url = env("DATABASE_URL") }
+enum Role { CUSTOMER ADMIN }
+model User { id String @id @default(cuid()) email String @unique passwordHash String name String? role Role @default(CUSTOMER) createdAt DateTime @default(now()) orders Order[] }
+model Product { id String @id @default(cuid()) name String slug String @unique category String description String price Int imageUrl String availableSizes String[] active Boolean @default(true) createdAt DateTime @default(now()) orderItems OrderItem[] }
+model Order { id String @id @default(cuid()) userId String? user User? @relation(fields:[userId],references:[id]) email String status String @default("PENDING") total Int stripeSessionId String? createdAt DateTime @default(now()) items OrderItem[] }
+model OrderItem { id String @id @default(cuid()) orderId String order Order @relation(fields:[orderId],references:[id]) productId String product Product @relation(fields:[productId],references:[id]) size String quantity Int unitPrice Int }

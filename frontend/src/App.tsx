@@ -1,6 +1,6 @@
 
 import React,{useEffect,useMemo,useState}from'react';
-import{Menu,Search,ShoppingBag,User,ArrowUpRight,X,Instagram,Plus,Minus}from'lucide-react';
+import{Menu,Search,ShoppingBag,User,ArrowUpRight,X,Camera,Plus,Minus}from'lucide-react';
 const API=import.meta.env.VITE_API_URL||'http://localhost:4000/api';
 type Product={id:string;name:string;category:string;price:number;imageUrl:string;description?:string;availableSizes:string[]};
 const samples:Product[]=[

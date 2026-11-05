@@ -14,19 +14,18 @@ const stripe = process.env.STRIPE_SECRET_KEY?.startsWith('sk_')
   : null;
 
 app.use(cors({ origin: process.env.FRONTEND_URL || true }));
-app.use(express.json());
 
 type AuthRequest = express.Request & { user?: { id: string; email: string; role: string } };
 function auth(req: AuthRequest, res: express.Response, next: express.NextFunction) {
   try {
-    const token = (req.headers.authorization || '').replace(/^Bearer\\s+/, '');
+    const token = (req.headers.authorization || '').replace(/^Bearer\s+/, '');
     req.user = jwt.verify(token, secret) as { id: string; email: string; role: string };
     next();
   } catch {
     res.status(401).json({ error: 'Please sign in to continue.' });
   }
 }
-function admin(req: AuthRequest, res: express.Response, next: express.NextFunction) {
+function optionalAuth(req: AuthRequest, _res: express.Response, next: express.NextFunction) {\n  try { const token = (req.headers.authorization || '').replace(/^Bearer\\s+/, ''); if (token) req.user = jwt.verify(token, secret) as { id: string; email: string; role: string }; } catch { /* guest checkout remains available */ }\n  next();\n}\nfunction admin(req: AuthRequest, res: express.Response, next: express.NextFunction) {
   if (req.user?.role !== 'ADMIN') return res.status(403).json({ error: 'Admin access required.' });
   next();
 }
@@ -64,6 +63,7 @@ app.post('/api/webhooks/stripe', express.raw({ type: 'application/json' }), asyn
   }
   res.json({ received: true });
 });
+app.use(express.json());
 
 app.get('/api/health', (_req, res) => res.json({ ok: true, brand: 'RISHU Paris' }));
 app.get('/api/products', async (_req, res) => {
@@ -91,7 +91,7 @@ app.post('/api/auth/login', async (req, res) => {
   res.json({ token, user: { id: user.id, email: user.email, name: user.name, role: user.role } });
 });
 
-app.get('/api/orders/mine', auth, async (req: AuthRequest, res) => {
+app.get('/api/auth/me', auth, (req: AuthRequest, res) => res.json({ user: req.user }));\n\napp.get('/api/orders/mine', auth, async (req: AuthRequest, res) => {
   const orders = await db.order.findMany({
     where: { OR: [{ userId: req.user!.id }, { email: req.user!.email }] },
     include: { items: { include: { product: true } } },
@@ -101,7 +101,7 @@ app.get('/api/orders/mine', auth, async (req: AuthRequest, res) => {
 });
 
 // Customer checkout: all prices and product availability are re-read from the database.
-app.post('/api/orders/checkout', async (req: AuthRequest, res) => {
+app.post('/api/orders/checkout', optionalAuth, async (req: AuthRequest, res) => {
   try {
     if (!stripe) return res.status(503).json({ error: 'Payments are not configured yet. Add the Stripe secret key to Netlify.' });
     const items = req.body.items as { productId: string; size: string; quantity: number }[];

@@ -5,7 +5,7 @@ type Product = { id:string; name:string; category:string; price:number; imageUrl
 const photo = (id:string) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=900&q=85`;
 const products:Product[] = [
   {id:'01',name:'Beige Stripe Oversized T-shirt',category:'Stripe T-shirts',price:34,imageUrl:photo('photo-1521572163474-6864f9cf17ab'),description:'Relaxed striped everyday tee with an easy oversized fit.',sizes:['S','M','L','XL'],colors:['Beige','White']},
-  {id:'02',name:'Navy Stripe Oversized T-shirt',category:'Stripe T-shirts',price:34,imageUrl:photo('photo-158165森'),description:'A relaxed stripe staple for everyday wear.',sizes:['S','M','L','XL'],colors:['Navy','White']},
+  {id:'02',name:'Navy Stripe Oversized T-shirt',category:'Stripe T-shirts',price:34,imageUrl:photo('photo-1581655353564-df123a1eb820'),description:'A relaxed stripe staple for everyday wear.',sizes:['S','M','L','XL'],colors:['Navy','White']},
   {id:'03',name:'Black Stripe Oversized T-shirt',category:'Stripe T-shirts',price:34,imageUrl:photo('photo-1503341504253-dff4815485f1'),description:'Oversized striped cotton tee.',sizes:['S','M','L','XL'],colors:['Black','White']},
   {id:'04',name:'Brown & White Stripe Oversized T-shirt',category:'Stripe T-shirts',price:34,imageUrl:photo('photo-1618354691373-d851c5c3a990'),description:'Two-tone stripe oversized tee.',sizes:['S','M','L','XL'],colors:['Brown','White']},
   {id:'05',name:'Brown & Pale Stripe Oversized T-shirt',category:'Stripe T-shirts',price:34,imageUrl:photo('photo-1523381210434-271e8be1f52b'),description:'Soft colour-blocked stripe tee.',sizes:['S','M','L','XL'],colors:['Brown','Cream']},
@@ -26,7 +26,7 @@ const products:Product[] = [
   {id:'20',name:'Acid Washed T-shirt — Charcoal',category:'Acid Washed T-shirts',price:39,imageUrl:photo('photo-1503341504253-dff4815485f1'),description:'Washed finish tee with a casual fit.',sizes:['S','M','L','XL'],colors:['Charcoal']},
   {id:'21',name:'Acid Washed T-shirt — Olive',category:'Acid Washed T-shirts',price:39,imageUrl:photo('photo-1521572163474-6864f9cf17ab'),description:'Vintage-wash cotton tee.',sizes:['S','M','L','XL'],colors:['Olive']},
   {id:'22',name:'Straight Fit Pants — Sand',category:'Straight Fit Pants',price:59,imageUrl:photo('photo-1473966968600-fa801b869a1a'),description:'Straight-leg everyday trousers.',sizes:['S','M','L','XL'],colors:['Sand']},
-  {id:'23',name:'Straight Fit Pants — Black',category:'Straight Fit Pants',price:59,imageUrl:photo('photo-151769387ущ'),description:'Clean straight-fit pants.',sizes:['S','M','L','XL'],colors:['Black']},
+  {id:'23',name:'Straight Fit Pants — Black',category:'Straight Fit Pants',price:59,imageUrl:photo('photo-1515886657613-9f3515b0c78f'),description:'Clean straight-fit pants.',sizes:['S','M','L','XL'],colors:['Black']},
   {id:'24',name:'Classic Blue Jeans',category:'Jeans',price:64,imageUrl:photo('photo-1542272604-787c3835535d'),description:'Everyday denim with a straight fit.',sizes:['28','30','32','34','36'],colors:['Blue']},
   {id:'25',name:'Washed Black Jeans',category:'Jeans',price:64,imageUrl:photo('photo-1541099649105-f69ad21f3246'),description:'Washed denim with a relaxed straight leg.',sizes:['28','30','32','34','36'],colors:['Black']},
   {id:'26',name:'Everyday Joggers — Grey',category:'Joggers',price:49,imageUrl:photo('photo-1552902865-b72c031ac5ea'),description:'Comfortable relaxed joggers.',sizes:['S','M','L','XL'],colors:['Grey']},

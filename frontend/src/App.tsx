@@ -22,7 +22,7 @@ export default function App(){
  const [accountOpen,setAccountOpen]=useState(false),[adminOpen,setAdminOpen]=useState(false),[authMode,setAuthMode]=useState<'login'|'register'>('login');
  const [email,setEmail]=useState(''),[password,setPassword]=useState(''),[fullName,setFullName]=useState('');
  const [orders,setOrders]=useState<Order[]>([]),[adminTab,setAdminTab]=useState<'orders'|'products'>('orders');
- const [editProduct,setEditProduct]=useState<Product|null>(null),[form,setForm]=useState({name:'',slug:'',category:'Polo Shirts',description:'',price:'69',imageUrl:'',availableSizes:'S,M,L,XL'});
+ const [editProduct,setEditProduct]=useState<Product|null>(null),[productFormOpen,setProductFormOpen]=useState(false),[form,setForm]=useState({name:'',slug:'',category:'Polo Shirts',description:'',price:'69',imageUrl:'',availableSizes:'S,M,L,XL'});
  const [adminOrders,setAdminOrders]=useState<Order[]>([]);
  const headers=()=>({ 'Content-Type':'application/json', ...(token?{Authorization:'Bearer '+token}:{}) });
  useEffect(()=>{fetch(API+'/products').then(r=>r.ok?r.json():[]).then(d=>{if(d.length)setProducts(d)}).catch(()=>{});},[]);

@@ -113,14 +113,14 @@ app.get('/api/orders/mine', auth, async (req: AuthRequest, res) => {
 app.post('/api/orders/checkout', optionalAuth, async (req: AuthRequest, res) => {
   try {
     if (!stripe) return res.status(503).json({ error: 'Payments are not configured yet. Add the Stripe secret key to Netlify.' });
-    const items = req.body.items as { productId: string; size: string; quantity: number }[];
+    const items = req.body.items as { productId: string; size: string; color?: string; quantity: number }[];
     if (!Array.isArray(items) || !items.length) return res.status(400).json({ error: 'Your bag is empty.' });
     const products = await db.product.findMany({ where: { id: { in: items.map(i => i.productId) }, active: true } });
     if (products.length !== new Set(items.map(i => i.productId)).size) return res.status(400).json({ error: 'A product is unavailable.' });
     const lineItems = items.map(i => {
       const product = products.find(p => p.id === i.productId)!;
-      if (!product.availableSizes.includes(i.size) || !Number.isInteger(i.quantity) || i.quantity < 1 || i.quantity > 10) throw new Error('Please check the selected size and quantity.');
-      return { product, size: i.size, quantity: i.quantity };
+      if (!product.availableSizes.includes(i.size) || (i.color && product.colors.length && !product.colors.includes(i.color)) || !Number.isInteger(i.quantity) || i.quantity < 1 || i.quantity > 10) throw new Error('Please check the selected size and quantity.');
+      return { product, size: i.size, color: i.color || null, quantity: i.quantity };
     });
     const total = lineItems.reduce((sum, i) => sum + i.product.price * i.quantity, 0);
     const order = await db.order.create({
@@ -129,13 +129,13 @@ app.post('/api/orders/checkout', optionalAuth, async (req: AuthRequest, res) => 
         email: req.user?.email || 'pending@checkout.rishu',
         status: 'PENDING',
         total,
-        items: { create: lineItems.map(i => ({ productId: i.product.id, size: i.size, quantity: i.quantity, unitPrice: i.product.price })) }
+        items: { create: lineItems.map(i => ({ productId: i.product.id, size: i.size, color: i.color, quantity: i.quantity, unitPrice: i.product.price })) }
       }
     });
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       line_items: lineItems.map(i => ({
-        price_data: { currency: 'eur', product_data: { name: `${i.product.name} — ${i.size}`, images: i.product.imageUrl.startsWith('https://') ? [i.product.imageUrl] : undefined }, unit_amount: i.product.price * 100 },
+        price_data: { currency: 'eur', product_data: { name: `${i.product.name} — ${i.size}${i.color ? ' / ' + i.color : ''}`, images: i.product.imageUrl.startsWith('https://') ? [i.product.imageUrl] : undefined }, unit_amount: i.product.price * 100 },
         quantity: i.quantity
       })),
       customer_email: req.user?.email,

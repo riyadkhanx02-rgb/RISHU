@@ -18,12 +18,12 @@ function photo(key: string, n: number) {
   const id = images[key][n % images[key].length];
   return `https://images.unsplash.com/${id}?auto=format&fit=crop&w=900&q=85`;
 }
-const products: {name:string;slug:string;category:string;description:string;price:number;imageUrl:string;availableSizes:string[]}[] = [];
+const products: {name:string;slug:string;category:string;description:string;price:number;imageUrl:string;availableSizes:string[];colors:string[]}[] = [];
 function add(category:string, key:string, names:string[], prices:number[], oneSize=false) {
   names.forEach((name,i)=>products.push({
     name, slug:name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''),
     category, description:'A considered RISHU essential, designed for effortless everyday dressing.',
-    price:prices[i] ?? prices[0], imageUrl:photo(key,i), availableSizes:oneSize?['One size']:key==='shoes'?['40','41','42','43','44','45']:key==='pants'||key==='jeans'||key==='shorts'?['S','M','L','XL']:sizes
+    price:prices[i] ?? prices[0], imageUrl:photo(key,i), availableSizes:oneSize?['One size']:key==='shoes'?['40','41','42','43','44','45']:key==='pants'||key==='jeans'||key==='shorts'?['S','M','L','XL']:sizes, colors:key==='sunglasses'?['Tortoise','Black','Gold']:key==='shoes'?['White','Brown','Black']:['Ivory','Navy','Forest Green','Black','Stone']
   }));
 }
 add('Polo Shirts','polo',[
@@ -48,7 +48,7 @@ add('Sunglasses','sunglasses',['The Riviera Acetate Sunglasses','The Classic Tor
 add('Shoes','shoes',['The Court Leather Sneaker','The Suede Weekend Loafer','The Minimal White Trainer','The Classic Penny Loafer'],[125,165,119,179]);
 
 async function main() {
-  for (const p of products) await db.product.upsert({ where: { slug: p.slug }, update: { name:p.name,category:p.category,description:p.description,price:p.price,imageUrl:p.imageUrl,availableSizes:p.availableSizes,active:true }, create:p });
+  for (const p of products) await db.product.upsert({ where: { slug: p.slug }, update: { name:p.name,category:p.category,description:p.description,price:p.price,imageUrl:p.imageUrl,availableSizes:p.availableSizes,colors:p.colors,active:true }, create:p });
   console.log(`Seeded ${products.length} RISHU products.`);
 }
 main().finally(()=>db.$disconnect());

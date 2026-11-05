@@ -38,6 +38,7 @@ CREATE TABLE "OrderItem" (
   "orderId" TEXT NOT NULL,
   "productId" TEXT NOT NULL,
   "size" TEXT NOT NULL,
+  "color" TEXT,
   "quantity" INTEGER NOT NULL,
   "unitPrice" INTEGER NOT NULL,
   CONSTRAINT "OrderItem_pkey" PRIMARY KEY ("id")

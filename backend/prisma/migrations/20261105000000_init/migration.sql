@@ -18,6 +18,7 @@ CREATE TABLE "Product" (
   "price" INTEGER NOT NULL,
   "imageUrl" TEXT NOT NULL,
   "availableSizes" TEXT[] NOT NULL,
+  "colors" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[],
   "active" BOOLEAN NOT NULL DEFAULT true,
   "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
@@ -43,8 +44,6 @@ CREATE TABLE "OrderItem" (
 );
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "Product_slug_key" ON "Product"("slug");
-CREATE INDEX "Order_userId_idx" ON "Order"("userId");
-CREATE INDEX "Order_stripeSessionId_idx" ON "Order"("stripeSessionId");
 ALTER TABLE "Order" ADD CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

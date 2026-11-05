@@ -98,7 +98,9 @@ app.post('/api/auth/login', async (req, res) => {
   res.json({ token, user: { id: user.id, email: user.email, name: user.name, role: user.role } });
 });
 
-app.get('/api/auth/me', auth, (req: AuthRequest, res) => res.json({ user: req.user }));\n\napp.get('/api/orders/mine', auth, async (req: AuthRequest, res) => {
+app.get('/api/auth/me', auth, (req: AuthRequest, res) => res.json({ user: req.user }));
+
+app.get('/api/orders/mine', auth, async (req: AuthRequest, res) => {
   const orders = await db.order.findMany({
     where: { OR: [{ userId: req.user!.id }, { email: req.user!.email }] },
     include: { items: { include: { product: true } } },

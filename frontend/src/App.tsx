@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Menu, Search, ShoppingBag, User, ArrowUpRight, X, Camera, Plus, Minus, LogOut, Package, ShieldCheck, Pencil, Trash2 } from 'lucide-react';
+import { Menu, Search, ShoppingBag, User, ArrowUpRight, X, Camera, Plus, Minus, LogOut, ShieldCheck, Pencil, Trash2 } from 'lucide-react';
 
-const API = import.meta.env.VITE_API_URL || '/.netlify/functions/api';
+const API = import.meta.env.VITE_API_URL || '/api';
 type Product = { id:string; name:string; slug?:string; category:string; price:number; imageUrl:string; description?:string; availableSizes:string[]; active?:boolean };
 type UserData = { id:string; email:string; name?:string; role:string };
 type Order = { id:string; email:string; status:string; total:number; createdAt:string; items:{id:string;size:string;quantity:number;unitPrice:number;product:Product}[] };

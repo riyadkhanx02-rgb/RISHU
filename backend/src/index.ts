@@ -25,7 +25,14 @@ function auth(req: AuthRequest, res: express.Response, next: express.NextFunctio
     res.status(401).json({ error: 'Please sign in to continue.' });
   }
 }
-function optionalAuth(req: AuthRequest, _res: express.Response, next: express.NextFunction) {\n  try { const token = (req.headers.authorization || '').replace(/^Bearer\\s+/, ''); if (token) req.user = jwt.verify(token, secret) as { id: string; email: string; role: string }; } catch { /* guest checkout remains available */ }\n  next();\n}\nfunction admin(req: AuthRequest, res: express.Response, next: express.NextFunction) {
+function optionalAuth(req: AuthRequest, _res: express.Response, next: express.NextFunction) {
+  try {
+    const token = (req.headers.authorization || '').replace(/^Bearer\s+/, '');
+    if (token) req.user = jwt.verify(token, secret) as { id: string; email: string; role: string };
+  } catch { /* guest checkout remains available */ }
+  next();
+}
+function admin(req: AuthRequest, res: express.Response, next: express.NextFunction) {
   if (req.user?.role !== 'ADMIN') return res.status(403).json({ error: 'Admin access required.' });
   next();
 }

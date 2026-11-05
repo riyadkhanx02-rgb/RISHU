@@ -19,7 +19,7 @@ type AuthRequest = express.Request & { user?: { id: string; email: string; role:
 function auth(req: AuthRequest, res: express.Response, next: express.NextFunction) {
   try {
     const token = (req.headers.authorization || '').replace(/^Bearer\s+/, '');
-    req.user = jwt.verify(token, secret) as { id: string; email: string; role: string };
+    req.user = jwt.verify(token, secret) as unknown as { id: string; email: string; role: string };
     next();
   } catch {
     res.status(401).json({ error: 'Please sign in to continue.' });
@@ -28,7 +28,7 @@ function auth(req: AuthRequest, res: express.Response, next: express.NextFunctio
 function optionalAuth(req: AuthRequest, _res: express.Response, next: express.NextFunction) {
   try {
     const token = (req.headers.authorization || '').replace(/^Bearer\s+/, '');
-    if (token) req.user = jwt.verify(token, secret) as { id: string; email: string; role: string };
+    if (token) req.user = jwt.verify(token, secret) as unknown as { id: string; email: string; role: string };
   } catch { /* guest checkout remains available */ }
   next();
 }

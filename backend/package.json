@@ -15,7 +15,8 @@
     "dotenv": "latest",
     "express": "latest",
     "jsonwebtoken": "latest",
-    "stripe": "latest"
+    "stripe": "latest",
+    "serverless-http": "latest"
   },
   "devDependencies": {
     "@types/bcryptjs": "latest",
